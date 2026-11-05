@@ -1,0 +1,20 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "lucathompson@gmail.com",
+                "Name": "Luca Thompson"
+            }
+        ],
+        "Category": "Media Information",
+        "Description": "Shows currently playing music track info",
+        "Icon": "music",
+        "Id": "com.github.luca-thompson.musewidge",
+        "Name": "musewidge",
+        "Version": "1",
+        "Website": "https://github.com/luca-thompson/plasmoid-musewidge"
+    },
+    "KPackageStructure": "Plasma/Applet",
+    "X-Plasma-API-Minimum-Version": "6.0"
+}
+// source: KDE Documentation
