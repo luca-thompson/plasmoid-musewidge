@@ -1,12 +1,3 @@
-
-/*
-adapted from
- *   SPDX-FileCopyrightText: 2012 Gregor Taetzner <gregor@freenet.de>
- *   SPDX-FileCopyrightText: 2020 Ivan Čukić <ivan.cukic at kde.org>
- *
- *   SPDX-License-Identifier: LGPL-2.0-or-later
- */
-
 import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.plasmoid
@@ -20,17 +11,6 @@ PlasmoidItem {
 
     property string outputText: "Loading..."
 
-    PlasmaComponents3.Label {
-        id: name
-
-        height: parent.height
-        width: implicitWidth
-
-        verticalAlignment: Text.AlignVCenter
-
-        text: "test"
-    }
-
     Plasma5Support.DataSource {
         id: executable
         engine: "executable"
@@ -41,34 +21,38 @@ PlasmoidItem {
             if (stdout !== undefined) {
                 root.outputText = stdout.trim()
             }
-            // Disconnect the source after reading so it doesn't loop
+
             disconnectSource(source)
         }
     }
 
     function runBashCommand() {
-        var cmd = "date '+%H:%M:%S'" // Replace with your bash command or script
+        var cmd = "date"
         executable.connectSource(cmd)
     }
 
     ColumnLayout {
-            anchors.fill: parent
-            spacing: 8
-    
-            PlasmaComponents3.Label {
-                id: myLabel
-                text: root.outputText
-                Layout.alignment: Qt.AlignCenter
-            }
-    
-            PlasmaComponents3.Button {
-                text: "Run Bash"
-                onClicked: runBashCommand()
-            }
-        }
-    
-        Component.onCompleted: {
-            runBashCommand() // Run automatically on load, or trigger via timer/button
+        anchors.fill: parent
+        spacing: 8
+
+        PlasmaComponents3.Label {
+            id: myLabel
+            text: root.outputText
         }
 
+        Timer {
+            id: timedLoop
+            interval: 1000
+            running: true
+            repeat: true
+    
+            onTriggered: {
+                root.runBashCommand()
+            }
+        }
+    }
+    
+    Component.onCompleted: {
+        root.runBashCommand()
+    }
 }
