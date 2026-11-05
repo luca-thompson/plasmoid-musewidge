@@ -8,7 +8,7 @@
         ],
         "Category": "Media Information",
         "Description": "Shows currently playing music track info",
-        "Icon": "music",
+        "Icon": "audio-radio",
         "Id": "com.github.luca-thompson.musewidge",
         "Name": "musewidge",
         "Version": "1",
@@ -17,4 +17,3 @@
     "KPackageStructure": "Plasma/Applet",
     "X-Plasma-API-Minimum-Version": "6.0"
 }
-// source: KDE Documentation
