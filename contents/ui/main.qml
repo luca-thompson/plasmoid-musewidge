@@ -9,35 +9,61 @@ PlasmoidItem {
     width: 200
     height: 100
 
-    property string outputText: "Loading..."
-
+    property string titleText: "Loading..."
+    property string albumText: "Loading..."
+    
     Plasma5Support.DataSource {
-        id: executable
+        id: titleExecutable
         engine: "executable"
         connectedSources: []
         
         onNewData: function(source, data) {
             var stdout = data["stdout"]
             if (stdout !== undefined) {
-                root.outputText = stdout.trim()
+                root.titleText = stdout.trim()
             }
 
             disconnectSource(source)
         }
     }
 
-    function runBashCommand() {
-        var cmd = "date"
-        executable.connectSource(cmd)
+    Plasma5Support.DataSource {
+        id: albumExecutable
+        engine: "executable"
+        connectedSources: []
+        
+        onNewData: function(source, data) {
+            var stdout = data["stdout"]
+            if (stdout !== undefined) {
+                root.albumText = stdout.trim()
+            }
+
+            disconnectSource(source)
+        }
     }
 
-    ColumnLayout {
+    function runTitleCommand() {
+        var cmd = "playerctl metadata title"
+        titleExecutable.connectSource(cmd)
+    }
+
+    function runAlbumCommand() {
+        var cmd = "playerctl metadata album"
+        albumExecutable.connectSource(cmd)
+    }
+
+    RowLayout {
         anchors.fill: parent
-        spacing: 8
+        spacing: 20
 
         PlasmaComponents3.Label {
-            id: myLabel
-            text: root.outputText
+            id: titleLabel
+            text: root.titleText
+        }
+
+        PlasmaComponents3.Label {
+            id: albumLabel
+            text: root.albumText
         }
 
         Timer {
@@ -47,12 +73,14 @@ PlasmoidItem {
             repeat: true
     
             onTriggered: {
-                root.runBashCommand()
+                root.runTitleCommand()
+                root.runAlbumCommand()
             }
         }
     }
     
     Component.onCompleted: {
-        root.runBashCommand()
+        root.runTitleCommand()
+        root.runAlbumCommand()
     }
 }
