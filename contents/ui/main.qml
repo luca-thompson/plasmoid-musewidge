@@ -1,7 +1,7 @@
 import QtQuick
-import QtQuick.Layouts
+
 import org.kde.plasma.plasmoid
-import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.plasma5support as Plasma5Support
 
 PlasmoidItem {
@@ -11,7 +11,7 @@ PlasmoidItem {
 
     property string displayLabel: "Loading..."
 
-    PlasmaComponents3.Label {
+    PlasmaComponents.Label {
         id: displayLabel
         text: root.displayLabel
 
@@ -35,7 +35,14 @@ PlasmoidItem {
     }
 
     function fetchMetadata() {
+
         var cmd = "playerctl metadata --format '{{title}} | {{artist}}'"
+        executable.connectSource(cmd)
+    }
+
+    function fetchSpecifiedMetadata() {
+
+        var cmd = "playerctl --player=" + Plasmoid.configuration.configuredPlayer + " metadata --format '{{title}} | {{artist}}'"
         executable.connectSource(cmd)
     }
 
@@ -46,11 +53,21 @@ PlasmoidItem {
         repeat: true
 
         onTriggered: {
-            root.fetchMetadata()
+            if (Plasmoid.configuration.automaticPlayerSelection){
+                root.fetchMetadata()
+            }
+            else {
+                root.fetchSpecifiedMetadata()
+            }
         }
     }
     
     Component.onCompleted: {
-        root.fetchMetadata()
+        if (Plasmoid.configuration.automaticPlayerSelection){
+            root.fetchMetadata()
+        }
+        else {
+            root.fetchSpecifiedMetadata()
+        }
     }
 }
