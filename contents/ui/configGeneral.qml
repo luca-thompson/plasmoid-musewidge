@@ -24,11 +24,12 @@ KCM.SimpleKCM {
         PlasmaComponents3.CheckBox {
             id: automaticPlayerSelectionCheckbox
 
-            text: "automatic player selection"
+            text: "Automatic Player Selection"
         }
 
         PlasmaComponents3.TextField {
             id: playerEntry
+            placeholderText: i18n("spotify, firefox, etc.")
             enabled: !automaticPlayerSelectionCheckbox.checked
         }
     }

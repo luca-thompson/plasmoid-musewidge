@@ -3,11 +3,13 @@ import QtQuick
 import org.kde.plasma.plasmoid
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.plasma5support as Plasma5Support
+import QtQuick.Layouts
 
 PlasmoidItem {
     id: root
-    width: 200
-    height: 100
+    Layout.preferredWidth: displayLabel.implicitWidth
+    Layout.minimumWidth: Layout.preferredWidth
+    
 
     property string displayLabel: "Loading..."
 
@@ -17,6 +19,7 @@ PlasmoidItem {
 
         anchors.right: parent.right
         horizontalAlignment: Text.AlignRight 
+        anchors.centerIn: parent
     }
     
     Plasma5Support.DataSource {
